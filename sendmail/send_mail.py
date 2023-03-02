@@ -40,13 +40,16 @@ def main():
 def send(subject, body, recipients):
     
     prev_subject = os.getenv("subject")
-
+    
     if (prev_subject == subject):
-        if os.getenv('timeout') is None:
-            timeout = datetime.now() + timedelta(minutes=5)
-            os.environ['timeout'] = str(timeout.timestamp())
+        timestamp = os.getenv('timeout')
+        if timestamp is None:
+            timeout = datetime.now() + timedelta(minutes=30)
+            timestamp = str(timeout.timestamp())
+            os.environ['timeout'] = timestamp
 
-        return (200, "SKIPPED")
+        datestamp = datetime.fromtimestamp(float(timestamp))
+        return (200, f"SKIPPED - {datestamp}")
     else:
         os.environ['subject'] = subject
 
