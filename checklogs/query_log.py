@@ -37,11 +37,15 @@ def to_json(query_results):
             json_results.append(dict(zip(table.columns, row)))
     return json_results
 
-def test_query():
+def test():
     query= """AppRequests | take 5
 | extend FullName_ = tostring(Properties.FullName)
 | extend TriggerReason_ = tostring(Properties.TriggerReason)
 | project TimeGenerated, Id, Name, Success, FullName_, TriggerReason_"""
+    test_query(query)
+
+def test_query(query):
+
 
     try:
         response = client.query_workspace(workspace, query, timespan=timedelta(days=1))
@@ -61,4 +65,4 @@ def test_query():
         print (err)
 
 if __name__ == "__main__":
-    send.test()
+    test()

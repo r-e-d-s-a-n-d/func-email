@@ -14,7 +14,7 @@ def main():
         "content": "This is the content."
     }
 
-    email = render("default", **data)
+    email = render("default", content="This is content")
     print(email)
 
 def get_keys(template):
@@ -37,12 +37,17 @@ def get_from(data, key_map):
 
     return str(content)
 
-def render(template, **kwargs):
+def render(template, **data):
 
     keywords, html = get_keys(template)
 
+    skip_format = data.get('skip_format')
+
+    if skip_format:
+        return ""
+
     for keyword in keywords:
-        content = get_from(kwargs, keyword)
+        content = get_from(data, keyword)
         html = html.replace(f"{{{{{keyword}}}}}", content)
 
     return html

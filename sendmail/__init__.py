@@ -1,12 +1,15 @@
+import os
 import logging
 import azure.functions as func
 
+from datetime import datetime
 from . import send_mail as mail
 from . import template_mail as template
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
+    prev_subject = os.getenv("subject")
     send_to = ['rsandoval@REDACTED.com']
     subject = 'REDACTED Alert'
     html_template = 'default'
@@ -30,6 +33,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         sendto_list.append(send_to)
         send_to = sendto_list
 
+    if (prev_subject == subject):
+        timeout = os.getenv('timeout')
+        if timeout is not None:
+            timestamp = datetime.fromtimestamp(float(timeout))
+            now = datetime.now()
+            if (now > timestamp):
+                os.environ['subject'] = ''
+
     if isinstance(data, list):
         html_template_list = html_template + "-list"
         content = ""
@@ -41,11 +52,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     else:
         body = template.render(html_template, **data)
 
-    #status, result = mail.send(subject, body, send_to)
+    status, result = mail.send(subject, body, send_to)
 
     print(body)
-
-    if status == 200:
-        result = f"Message sent to {','.join(send_to)}"
 
     return func.HttpResponse(result, status_code=status)

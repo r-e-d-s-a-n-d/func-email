@@ -4,7 +4,7 @@ import json
 import azure.functions as func
 from azure.identity import DeviceCodeCredential, ClientSecretCredential
 from msgraph.core import GraphClient
-from pprint import pprint
+from datetime import datetime, timedelta
 
 device_code_credential: DeviceCodeCredential
 user_client: GraphClient
@@ -38,6 +38,18 @@ def main():
     print("Mail sent.\n")
 
 def send(subject, body, recipients):
+    
+    prev_subject = os.getenv("subject")
+
+    if (prev_subject == subject):
+        if os.getenv('timeout') is None:
+            timeout = datetime.now() + timedelta(minutes=5)
+            os.environ['timeout'] = str(timeout.timestamp())
+
+        return (200, "SKIPPED")
+    else:
+        os.environ['subject'] = subject
+
     request_body = {
         "message": {
             "subject": subject,
@@ -60,7 +72,7 @@ def send(subject, body, recipients):
     else:
         print(request_body)
 
-    return (200, "OK")
+    return (200, ','.join(recipients))
 
 if __name__ == "__main__":
     main()    
