@@ -1,6 +1,7 @@
 import re
 import os
 import operator
+import html
 from pathlib import Path
 from functools import reduce
 
@@ -14,11 +15,26 @@ def main():
         "content": "This is the content."
     }
 
-    email = render("default", content="This is content")
+    email = render("default", **data)
     print(email)
 
-def get_keys(template):
+def html_format(text):
+    html_text = ""
+    lines = text.strip().splitlines()
 
+    if len(lines) == 1:
+        html_text = html.escape(lines[0])
+    else:
+        for line in lines:
+            clean_line = html.escape(line)
+            if clean_line == "":
+                html_text += "<br>"    
+            else:
+                html_text += f"<p>{clean_line}</p>"
+    
+    return html_text
+
+def get_keys(template):
     template = os.path.join(path, f"../templates/{template}.html")
     
     with open(template, "r") as file:
@@ -28,30 +44,30 @@ def get_keys(template):
     keywords = re.findall(pattern, html)
     return (keywords, html)
 
-def get_from(data, key_map):
-    
+def get_from(data, key_map):    
     try:
-        content = reduce(operator.getitem, key_map.split("."), data)
+        content = reduce(operator.getitem, key_map.split('.'), data)
     except:
         content = ""
 
     return str(content)
 
 def render(template, **data):
-
     keywords, html = get_keys(template)
 
-    skip_format = data.get('skip_format')
-
-    if skip_format:
-        return ""
+    skip_format = data.get('skip_format', False)
 
     for keyword in keywords:
         content = get_from(data, keyword)
+        
+        if (keyword == "alert_env"):
+            skip_format = True
+
+        content = content if skip_format else html_format(content)
         html = html.replace(f"{{{{{keyword}}}}}", content)
 
     return html
 
 
 if __name__ == "__main__":
-    main() 
+    main()
