@@ -59,11 +59,13 @@ def render(template, **data):
 
     for keyword in keywords:
         content = get_from(data, keyword)
+        skip_key = False
         
-        if (keyword == "alert_env"):
-            skip_format = True
-
-        content = content if skip_format else html_format(content)
+        if "raw" in keyword:
+            keyword = keyword.replace("_raw", "")
+            skip_key = True
+        
+        content = content if skip_format or skip_key else html_format(content)
         html = html.replace(f"{{{{{keyword}}}}}", content)
 
     return html
