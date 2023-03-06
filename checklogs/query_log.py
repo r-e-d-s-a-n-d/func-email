@@ -3,7 +3,7 @@ import logging
 import pprint
 import json
 import sys
-from datetime import timedelta
+from datetime import datetime, timedelta
 from azure.identity import ManagedIdentityCredential, ClientSecretCredential
 from azure.monitor.query import LogsQueryClient, MetricsQueryClient, LogsQueryStatus
 from azure.core.exceptions import HttpResponseError
@@ -24,6 +24,15 @@ workspace = os.getenv('WORKSPACE_ID', 'd9691c06-68f4-477a-af60-a760248ac4c6')
 credential = ClientSecretCredential(tenant_id, client_id, client_secret)
 client = LogsQueryClient(credential)
 metrics_client = MetricsQueryClient(credential)
+
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, datetime):
+        return obj.strftime("%Y-%m-%d %I:%S %p")
+    else:
+        return str(obj)
 
 # create function to run kql query 
 def run_kql_query(query, workspace_id, time_range):
@@ -58,7 +67,7 @@ def test_query(query):
             data = response.tables
         
         json_data = to_json(data)
-        print(json.dumps(json_data, indent=4, sort_keys=True, default=str))
+        print(json.dumps(json_data, indent=4, sort_keys=True, default=json_serial))
 
     except HttpResponseError as err:
         print("something fatal happened")
