@@ -1,18 +1,11 @@
 import os
 import logging
-import pprint
 import json
 import sys
 from datetime import datetime, timedelta
 from azure.identity import ManagedIdentityCredential, ClientSecretCredential
 from azure.monitor.query import LogsQueryClient, MetricsQueryClient, LogsQueryStatus
 from azure.core.exceptions import HttpResponseError
-
-sys.path.append('../')
-
-from sendmail import send_mail as send
-
-pp = pprint.PrettyPrinter(indent=4)
 
 client_id = os.getenv('CLIENT_ID', '00000000-0000-0000-0000-000000000000')
 client_secret = os.getenv('CLIENT_SECRET', 'REDACTED')
@@ -51,11 +44,9 @@ def test():
 | extend FullName_ = tostring(Properties.FullName)
 | extend TriggerReason_ = tostring(Properties.TriggerReason)
 | project TimeGenerated, Id, Name, Success, FullName_, TriggerReason_"""
-    test_query(query)
+    return test_query(query)
 
 def test_query(query):
-
-
     try:
         response = client.query_workspace(workspace, query, timespan=timedelta(days=1))
         if response.status == LogsQueryStatus.PARTIAL:
@@ -67,11 +58,13 @@ def test_query(query):
             data = response.tables
         
         json_data = to_json(data)
-        print(json.dumps(json_data, indent=4, sort_keys=True, default=json_serial))
+        
+        return json_data
 
     except HttpResponseError as err:
         print("something fatal happened")
         print (err)
 
 if __name__ == "__main__":
-    test()
+    data = test()
+    print(json.dumps(data, indent=4, sort_keys=True, default=json_serial))
