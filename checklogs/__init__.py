@@ -11,9 +11,6 @@ def main(mytimer: func.TimerRequest) -> None:
     if mytimer.past_due:
         logging.info('The timer is past due!')
         
-    with open("kql_config.json", "r") as jsonfile:
-        kql = json.load(jsonfile)
-
     query.test_query()
 
     logging.info('Python timer trigger function ran at %s', utc_timestamp)

@@ -7,6 +7,8 @@ from azure.identity import ManagedIdentityCredential, ClientSecretCredential
 from azure.monitor.query import LogsQueryClient, MetricsQueryClient, LogsQueryStatus
 from azure.core.exceptions import HttpResponseError
 
+sys.path.append('../')
+
 client_id = os.getenv('CLIENT_ID', '00000000-0000-0000-0000-000000000000')
 client_secret = os.getenv('CLIENT_SECRET', 'REDACTED')
 graph_scopes = os.getenv('GRAPH_SCOPE', 'https://graph.microsoft.com/.default').split(' ')
@@ -66,5 +68,12 @@ def test_query(query):
         print (err)
 
 if __name__ == "__main__":
-    data = test()
-    print(json.dumps(data, indent=4, sort_keys=True, default=json_serial))
+
+    with open(os.path.join(os.getcwd(), 'kql_config.json'), "r") as jsonfile:
+        kql = json.load(jsonfile)
+
+    for query in kql:
+        print(f"Query: {query['kql']}")
+
+    # data = test()
+    # print(json.dumps(data, indent=4, sort_keys=True, default=json_serial))
