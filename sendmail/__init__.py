@@ -3,13 +3,12 @@ import logging
 import sys
 from datetime import datetime
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_path =  os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, dir_path)
 
 import azure.functions as func
-
+import template_mail as template
 from send_mail import SendMail
-from . import template_mail as template
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')

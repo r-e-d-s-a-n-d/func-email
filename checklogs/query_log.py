@@ -46,8 +46,8 @@ def test():
 | extend FullName_ = tostring(Properties.FullName)
 | extend TriggerReason_ = tostring(Properties.TriggerReason)
 | project TimeGenerated, Id, Name, Success, FullName_, TriggerReason_"""
-    return []
-    #return test_query(query)
+    
+    return test_query(query)
 
 def test_query(query):
     try:
