@@ -1,13 +1,19 @@
 import os
 import logging
+import sys
+from datetime import datetime
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, dir_path)
+
 import azure.functions as func
 
-from datetime import datetime
-from . import send_mail as mail
+from send_mail import SendMail
 from . import template_mail as template
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
+    mail = SendMail()
 
     prev_subject = os.getenv("subject")
     send_to = ['rsandoval@REDACTED.com']

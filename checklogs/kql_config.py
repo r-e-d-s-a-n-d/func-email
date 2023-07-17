@@ -1,4 +1,4 @@
-[
+config = [
     {
         "subject":"NON-PROD Datafactory Pipeline Run Failed Alert",
         "template": "log-fail",

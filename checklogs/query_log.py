@@ -46,7 +46,8 @@ def test():
 | extend FullName_ = tostring(Properties.FullName)
 | extend TriggerReason_ = tostring(Properties.TriggerReason)
 | project TimeGenerated, Id, Name, Success, FullName_, TriggerReason_"""
-    return test_query(query)
+    return []
+    #return test_query(query)
 
 def test_query(query):
     try:
@@ -68,12 +69,11 @@ def test_query(query):
         print (err)
 
 if __name__ == "__main__":
+    # kql = options.config
 
-    with open(os.path.join(os.getcwd(), 'kql_config.json'), "r") as jsonfile:
-        kql = json.load(jsonfile)
+    # for query in kql:
+    #     print(f"Query: {query['kql']}")
 
-    for query in kql:
-        print(f"Query: {query['kql']}")
-
-    # data = test()
+    data = test()
+    print(len(data))
     # print(json.dumps(data, indent=4, sort_keys=True, default=json_serial))
