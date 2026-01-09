@@ -26,3 +26,4 @@ Run test
 - VS Code - when combined with the Azure Tools extension, makes working with Azure functions easier.
 - Docker - for building the function into a docker container
 - Make [optional] - a utility for orchestrating shell commands (can be run manually instead if desired -- see the [`Makefile`](Makefile))
+- MS Graph [SendMail](https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0&tabs=http) permission
