@@ -10,10 +10,10 @@ from azure.core.exceptions import HttpResponseError
 sys.path.append('../')
 
 client_id = os.getenv('CLIENT_ID', '00000000-0000-0000-0000-000000000000')
-client_secret = os.getenv('CLIENT_SECRET', 'REDACTED')
+client_secret = os.getenv('CLIENT_SECRET', '***********')
 graph_scopes = os.getenv('GRAPH_SCOPE', 'https://graph.microsoft.com/.default').split(' ')
 tenant_id = os.getenv('TENANT_ID', '00000000-0000-0000-0000-000000000000')
-workspace = os.getenv('WORKSPACE_ID', 'd9691c06-68f4-477a-af60-a760248ac4c6')
+workspace = os.getenv('WORKSPACE_ID', '00000000-0000-0000-0000-000000000000')
 
 #credential = ManagedIdentityCredential()
 credential = ClientSecretCredential(tenant_id, client_id, client_secret)
