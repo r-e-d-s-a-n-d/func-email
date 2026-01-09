@@ -15,7 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     mail = SendMail()
 
     prev_subject = os.getenv("subject")
-    send_to = ['rsandoval@REDACTED.com']
+    send_to = ['redsand@email.com']
     subject = 'REDACTED Alert'
     html_template = 'default'
     data = {}
