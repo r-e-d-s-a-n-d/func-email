@@ -2,8 +2,8 @@ require('isomorphic-fetch');
 
 const endpoint = 'http://127.0.0.1:7071/api/sendmail';
 const email = {
-    sendTo: 'rsandoval@REDACTED.com',
-    subject: 'REDACTED Alert',
+    sendTo: 'redsand@email.com',
+    subject: 'Alert',
     template: 'default',
     data: {
       summary: 'This is a summary',
