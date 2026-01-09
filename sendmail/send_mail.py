@@ -14,7 +14,7 @@ class SendMail:
 
         client_id = os.getenv("CLIENT_ID", "00000000-0000-0000-0000-000000000000")
         client_secret = os.getenv("CLIENT_SECRET")
-        from_email = os.getenv("FROM_EMAIL", "REDACTEDEmailPOC")
+        from_email = os.getenv("FROM_EMAIL", "FuncEmail")
         graph_scopes = os.getenv("GRAPH_SCOPE", "https://graph.microsoft.com/.default").split(" ")
         tenant_id = os.getenv("TENANT_ID", "00000000-0000-0000-0000-000000000000")
 
