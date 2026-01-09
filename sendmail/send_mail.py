@@ -25,7 +25,7 @@ class SendMail:
         
 
     def test(self):
-        recipients = ['rsandoval1@REDACTED.com', 'rsandoval2@REDACTED.com']
+        recipients = ['redsand@email.com']
         subject = "Testing Microsoft Graph"
         body = "Hello world!"
 
